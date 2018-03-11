@@ -21,23 +21,23 @@ public class HomeController {
 		return "/home";
 	}
 	
-	@ModelAttribute
-	public FormDTO createFormBean() {
-		return new FormDTO();
-	}
-	
-	@RequestMapping(value = "/", method=RequestMethod.POST)
-	public String submitMessage(@Valid FormDTO formDTO, BindingResult result,
-								SessionStatus sessionStatus,
-								RedirectAttributes redirectAttrs) {
-		
-		if (result.hasErrors()) {
-			return "/home";
-		}
-		String message = formDTO.toString();
-		sessionStatus.setComplete();
-		redirectAttrs.addFlashAttribute("message", message);
-		
-		return "redirect:/";
-	}
+//	@ModelAttribute
+//	public FormDTO createFormBean() {
+//		return new FormDTO();
+//	}
+//	
+//	@RequestMapping(value = "/", method=RequestMethod.POST)
+//	public String submitMessage(@Valid FormDTO formDTO, BindingResult result,
+//								SessionStatus sessionStatus,
+//								RedirectAttributes redirectAttrs) {
+//		
+//		if (result.hasErrors()) {
+//			return "/home";
+//		}
+//		String message = formDTO.toString();
+//		sessionStatus.setComplete();
+//		redirectAttrs.addFlashAttribute("message", message);
+//		
+//		return "redirect:/";
+//	}
 }

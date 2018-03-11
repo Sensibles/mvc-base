@@ -1,3 +1,11 @@
+
+This project is prepared for learning spring MVC with "Spring in action" book. Just for my personal purposes. Of course feel free to use it if you want.
+
+
+
+
+Orginal readme:
+
 mvc-base
 ========
 

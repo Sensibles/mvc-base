@@ -8,6 +8,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -22,48 +23,55 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(basePackages = { "com.geowarin.mvc.base.controller" })
 public class WebConfig extends WebMvcConfigurerAdapter {
 
+//	@Override
+//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+//	}
+//
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//
+//		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+//		localeChangeInterceptor.setParamName("lang");
+//		registry.addInterceptor(localeChangeInterceptor);
+//	}
+
+//	@Bean
+//	public LocaleResolver localeResolver() {
+//
+//		CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
+//		cookieLocaleResolver.setDefaultLocale(StringUtils.parseLocaleString("en"));
+//		return cookieLocaleResolver;
+//	}
+	
 	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-	}
-
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-
-		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-		localeChangeInterceptor.setParamName("lang");
-		registry.addInterceptor(localeChangeInterceptor);
-	}
-
-	@Bean
-	public LocaleResolver localeResolver() {
-
-		CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
-		cookieLocaleResolver.setDefaultLocale(StringUtils.parseLocaleString("en"));
-		return cookieLocaleResolver;
+	public void configureDefaultServletHandling (
+	DefaultServletHandlerConfigurer configurer) {
+	configurer.enable();
 	}
 
 	@Bean
 	public ViewResolver viewResolver() {
 
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
+	//	viewResolver.setViewClass(JstlView.class);
 		viewResolver.setPrefix("/WEB-INF/views");
 		viewResolver.setSuffix(".jsp");
+		viewResolver.setExposeContextBeansAsAttributes(true);
 		return viewResolver;
 	}
 
-	@Bean
-	public MessageSource messageSource() {
-
-		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasenames("classpath:messages/messages", "classpath:messages/validation");
-		// if true, the key of the message will be displayed if the key is not
-		// found, instead of throwing a NoSuchMessageException
-		messageSource.setUseCodeAsDefaultMessage(true);
-		messageSource.setDefaultEncoding("UTF-8");
-		// # -1 : never reload, 0 always reload
-		messageSource.setCacheSeconds(0);
-		return messageSource;
-	}
+//	@Bean
+//	public MessageSource messageSource() {
+//
+//		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+//		messageSource.setBasenames("classpath:messages/messages", "classpath:messages/validation");
+//		// if true, the key of the message will be displayed if the key is not
+//		// found, instead of throwing a NoSuchMessageException
+//		messageSource.setUseCodeAsDefaultMessage(true);
+//		messageSource.setDefaultEncoding("UTF-8");
+//		// # -1 : never reload, 0 always reload
+//		messageSource.setCacheSeconds(0);
+//		return messageSource;
+//	}
 }
