@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
-@ComponentScan(basePackages = { "com.geowarin.mvc.base.controller" },
+@ComponentScan(basePackages = { "com.geowarin.mvc" },
 excludeFilters={
 @Filter(type=FilterType.ANNOTATION, value=EnableWebMvc.class)
 })

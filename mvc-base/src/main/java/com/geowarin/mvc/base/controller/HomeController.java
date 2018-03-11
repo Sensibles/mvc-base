@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.geowarin.mvc.base.dto.FormDTO;
 
 @Controller
 public class HomeController {
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-    public String displayHome(Model model) {
-		return "/home";
+	@RequestMapping(value = {"/", "/homepage"}, method = RequestMethod.GET)
+    public String home() {
+		return "home";
 	}
 	
 //	@ModelAttribute
