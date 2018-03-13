@@ -1,26 +1,88 @@
 package com.geowarin.mvc.base.data;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class Spitter {
 	private Long id;
-	private String firstName, lastName, username, password;
+	
+	@NotNull
+	@Size(min=5, max=16, message="{username.size}")
+	private String username;
+	@NotNull
+	@Size(min=5, max=25, message="{password.size}")
+	private String password;
+	@NotNull
+	@Size(min=2, max=30, message="{firstName.size}")
+	private String firstName;
+	@NotNull
+	@Size(min=2, max=30, message="{lastName.size}")
+	private String lastName;
+	@NotNull
+	@Email(message="{email.valid}")
+	private String email;
 	
 	public Spitter() {}
 	
+	
+	
+	
 
-	public Spitter(Long id, String firstName, String lastName, String username, String password) {
+	public Spitter(Long id, @NotNull @Size(min = 5, max = 16, message = "{username.size}") String username,
+			@NotNull @Size(min = 5, max = 25, message = "{password.size}") String password,
+			@NotNull @Size(min = 2, max = 30, message = "{firstName.size}") String firstName,
+			@NotNull @Size(min = 2, max = 30, message = "{lastName.size}") String lastName,
+			@NotNull @Email(message = "{email.valid}") String email) {
 		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.id = id;
 		this.username = username;
 		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+	}
+
+
+
+
+
+	public Spitter(@NotNull @Size(min = 5, max = 16, message = "{username.size}") String username,
+			@NotNull @Size(min = 5, max = 25, message = "{password.size}") String password,
+			@NotNull @Size(min = 2, max = 30, message = "{firstName.size}") String firstName,
+			@NotNull @Size(min = 2, max = 30, message = "{lastName.size}") String lastName,
+			@NotNull @Email(message = "{email.valid}") String email) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+	}
+
+
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Spitter(String firstName, String lastName, String username, String password) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
@@ -40,21 +102,15 @@ public class Spitter {
 		this.lastName = lastName;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
+	
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 	
 	
 

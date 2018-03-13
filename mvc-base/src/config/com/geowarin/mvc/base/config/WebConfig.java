@@ -1,78 +1,101 @@
 package com.geowarin.mvc.base.config;
 
+import java.nio.charset.StandardCharsets;
+
+
+import org.springframework.beans.BeansException;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "com.geowarin.mvc" })
-public class WebConfig implements WebMvcConfigurer {
+public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
-//	@Override
-//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-//	}
-//
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//
-//		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-//		localeChangeInterceptor.setParamName("lang");
-//		registry.addInterceptor(localeChangeInterceptor);
-//	}
 
-//	@Bean
-//	public LocaleResolver localeResolver() {
-//
-//		CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
-//		cookieLocaleResolver.setDefaultLocale(StringUtils.parseLocaleString("en"));
-//		return cookieLocaleResolver;
-//	}
+	private ApplicationContext applicationContext;
+	private static final String UTF8 = "UTF-8";
 	
 	@Override
-	public void configureDefaultServletHandling (
-	DefaultServletHandlerConfigurer configurer) {
-	configurer.enable();
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+		
 	}
+
+
+
+	/**
+	 * Used to create viewResolver (a way of building views in Spring mvc). We can
+	 * use 'default' viewResolver like internalResourceViewResolver or we can use
+	 * apache tiles view resolver or even Thymeleaf viewresolver.
+	 * 
+	 * @return
+	 */
+
+	// @Bean
+	// public ViewResolver viewResolver() {
+	//
+	// InternalResourceViewResolver viewResolver = new
+	// InternalResourceViewResolver();
+	// // viewResolver.setViewClass(JstlView.class);
+	// viewResolver.setPrefix("/WEB-INF/views/");
+	// viewResolver.setSuffix(".jsp");
+	// viewResolver.setExposeContextBeansAsAttributes(true);
+	// return viewResolver;
+	// }
+	
+	 @Bean
+	    public ViewResolver viewResolver() {
+	        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+	        resolver.setTemplateEngine(templateEngine());
+	        resolver.setCharacterEncoding(UTF8);
+	        return resolver;
+	    }
+
+	    private TemplateEngine templateEngine() {
+	        SpringTemplateEngine engine = new SpringTemplateEngine();
+	        engine.setTemplateResolver(templateResolver());
+	        return engine;
+	    }
+
+	    private ITemplateResolver templateResolver() {
+	        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+	        resolver.setApplicationContext(applicationContext);
+	        resolver.setPrefix("/WEB-INF/views/");
+	        resolver.setSuffix(".html");
+	        resolver.setTemplateMode(TemplateMode.HTML);
+	        return resolver;
+	    }
+
+
+	/**
+	 * Used to bind messages from view with some properties files that contains
+	 * text.
+	 * 
+	 * @return
+	 */
 
 	@Bean
-	public ViewResolver viewResolver() {
-
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-	//	viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/views/");
-		viewResolver.setSuffix(".jsp");
-		viewResolver.setExposeContextBeansAsAttributes(true);
-		return viewResolver;
+	public MessageSource messageSource() {
+		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+		messageSource.setBasename("messages");
+		return messageSource;
 	}
 
-//	@Bean
-//	public MessageSource messageSource() {
-//
-//		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-//		messageSource.setBasenames("classpath:messages/messages", "classpath:messages/validation");
-//		// if true, the key of the message will be displayed if the key is not
-//		// found, instead of throwing a NoSuchMessageException
-//		messageSource.setUseCodeAsDefaultMessage(true);
-//		messageSource.setDefaultEncoding("UTF-8");
-//		// # -1 : never reload, 0 always reload
-//		messageSource.setCacheSeconds(0);
-//		return messageSource;
-//	}
 }
