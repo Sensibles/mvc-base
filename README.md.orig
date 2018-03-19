@@ -1,4 +1,8 @@
-hotfix & New branch 'testBranch'
+<<<<<<< HEAD
+hotfix
+=======
+New branch 'testBranch'
+>>>>>>> testBranch
 
 Spring MVC Examples
 ===================
